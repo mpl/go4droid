@@ -42,8 +42,8 @@ RUN echo y | $ANDROID_HOME/tools/bin/sdkmanager 'ndk-bundle'
 # Get gradle. We don't actually need to build the app, but we need it to
 # generate the gradle wrapper, since it's not included in the app's repo.
 WORKDIR $GOPHER
-ENV GRADLE_VERSION 2.10
-ARG GRADLE_DOWNLOAD_SHA256=66406247f745fc6f05ab382d3f8d3e120c339f34ef54b86f6dc5f6efc18fbb13
+ENV GRADLE_VERSION 4.1
+ARG GRADLE_DOWNLOAD_SHA256=d55dfa9cfb5a3da86a1c9e75bb0b9507f9a8c8c100793ccec7beb6e259f9ed43
 RUN set -o errexit -o nounset \
 	&& echo "Downloading Gradle" \
 	&& wget --no-verbose --output-document=gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip"
@@ -67,7 +67,7 @@ ENV PATH $PATH:$GOROOT/bin:$GOPHER/bin
 # Get gomobile
 RUN go get -u golang.org/x/mobile/cmd/gomobile
 WORKDIR $GOPATH/src/golang.org/x/mobile/cmd/gomobile
-RUN git reset --hard c0beac360cc13173963df8872fe4b0f2542cb85b
+RUN git reset --hard 069be623eb8e75049d64f1419849b3e92aab1c81
 RUN go install
 
 # init gomobile
