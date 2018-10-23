@@ -1,8 +1,8 @@
-# Copyright 2017 The Camlistore Authors.
+# Copyright 2017 The Perkeep Authors.
 
 FROM openjdk:8-jdk
 
-MAINTAINER camlistore <camlistore@googlegroups.com>
+MAINTAINER Perkeep Authors <perkeep@googlegroups.com>
 
 CMD ["./gradlew"]
 
@@ -42,8 +42,8 @@ RUN echo y | $ANDROID_HOME/tools/bin/sdkmanager 'ndk-bundle'
 # Get gradle. We don't actually need to build the app, but we need it to
 # generate the gradle wrapper, since it's not included in the app's repo.
 WORKDIR $GOPHER
-ENV GRADLE_VERSION 4.1
-ARG GRADLE_DOWNLOAD_SHA256=d55dfa9cfb5a3da86a1c9e75bb0b9507f9a8c8c100793ccec7beb6e259f9ed43
+ENV GRADLE_VERSION 4.4
+ARG GRADLE_DOWNLOAD_SHA256=fa4873ae2c7f5e8c02ec6948ba95848cedced6134772a0169718eadcb39e0a2f
 RUN set -o errexit -o nounset \
 	&& echo "Downloading Gradle" \
 	&& wget --no-verbose --output-document=gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip"
@@ -57,9 +57,9 @@ RUN mkdir $GOPHER/bin \
 
 # Get Go stable release
 WORKDIR $GOPHER
-RUN curl -O https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
-RUN echo '1862f4c3d3907e59b04a757cfda0ea7aa9ef39274af99a784f5be843c80c6772  go1.8.3.linux-amd64.tar.gz' | sha256sum -c
-RUN tar -xzf go1.8.3.linux-amd64.tar.gz
+RUN curl -O https://storage.googleapis.com/golang/go1.11.1.linux-amd64.tar.gz
+RUN echo '2871270d8ff0c8c69f161aaae42f9f28739855ff5c5204752a8d92a1c9f63993  go1.11.1.linux-amd64.tar.gz' | sha256sum -c
+RUN tar -xzf go1.11.1.linux-amd64.tar.gz
 ENV GOPATH $GOPHER
 ENV GOROOT $GOPHER/go
 ENV PATH $PATH:$GOROOT/bin:$GOPHER/bin
@@ -67,7 +67,7 @@ ENV PATH $PATH:$GOROOT/bin:$GOPHER/bin
 # Get gomobile
 RUN go get -u golang.org/x/mobile/cmd/gomobile
 WORKDIR $GOPATH/src/golang.org/x/mobile/cmd/gomobile
-RUN git reset --hard 069be623eb8e75049d64f1419849b3e92aab1c81
+RUN git reset --hard 92f3b9caf7ba8f4f9c10074225afcba0cba47a62
 RUN go install
 
 # init gomobile
