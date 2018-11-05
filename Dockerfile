@@ -6,18 +6,20 @@ MAINTAINER Perkeep Authors <perkeep@googlegroups.com>
 
 CMD ["./gradlew"]
 
+# To enable running android tools such as aapt
+RUN apt-get update && apt-get -y upgrade
+RUN apt-get install -y lib32z1 lib32stdc++6 sudo
+# For Go:
+RUN apt-get -y --no-install-recommends install curl gcc
+RUN apt-get -y --no-install-recommends install ca-certificates libc6-dev git
+
 RUN echo "Adding gopher user and group" \
 	&& groupadd --system --gid 1000 gopher \
 	&& useradd --system --gid gopher --uid 1000 --shell /bin/bash --create-home gopher \
 	&& mkdir /home/gopher/.gradle \
 	&& chown --recursive gopher:gopher /home/gopher
-
-# To enable running android tools such as aapt
-RUN apt-get update && apt-get -y upgrade
-RUN apt-get install -y lib32z1 lib32stdc++6
-# For Go:
-RUN apt-get -y --no-install-recommends install curl gcc
-RUN apt-get -y --no-install-recommends install ca-certificates libc6-dev git
+RUN echo "gopher:gopher"| chpasswd
+RUN usermod -aG sudo gopher
 
 USER gopher
 VOLUME "/home/gopher/.gradle"
